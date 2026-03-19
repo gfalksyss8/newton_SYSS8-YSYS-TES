@@ -20,17 +20,12 @@ public class BookstoreInventoryTests
     }
 
     [TestMethod]
-    public void Test1()
-    {
-        //Implement tests
-        Assert.IsTrue(true);
-    }
-
-    [TestMethod]
     public void CreateValidBook_ShouldBeTrue()
     {
+        // Arrange
         var book = new Book("15353263", "BookTitle", "BookAuthor", 5);
 
+        // Assert
         Assert.IsTrue(!String.IsNullOrWhiteSpace(book.ISBN));
         Assert.IsTrue(!String.IsNullOrWhiteSpace(book.Title));
         Assert.IsTrue(!String.IsNullOrWhiteSpace(book.Author));
@@ -40,9 +35,13 @@ public class BookstoreInventoryTests
     [TestMethod]
     public void AddBook_NewBookShouldCreateNewObject()
     {
+        // Arrange
         Book test = new Book("3", "New book", "Author test", 1);
+
+        // Act
         _inventory.AddBook(test);
 
+        // Assert
         var result = _inventory.FindBookByTitle("New book");
         Assert.IsNotNull(result);
     }
@@ -50,38 +49,49 @@ public class BookstoreInventoryTests
     [TestMethod]
     public void AddBook_ExistingBookShouldAddStock()
     {
-        Book test = new Book("3", "New book", "Author test", 1);
-        _inventory.AddBook(test);
+        // Arrange
+        Book testInstanceBook = new Book("3", "New book", "Author test", 1);
+        _inventory.AddBook(testInstanceBook);
+        var initialStock = _inventory.CheckStock(testInstanceBook.ISBN);
+        _inventory.AddBook(testInstanceBook);
 
-        var initialStock = _inventory.CheckStock(test.ISBN);
+        // Act
+        var newStock = _inventory.CheckStock(testInstanceBook.ISBN);
 
-        _inventory.AddBook(test);
-        var newStock = _inventory.CheckStock(test.ISBN);
-
+        // Assert
         Assert.AreEqual(initialStock + 1, newStock);
     }
 
     [TestMethod]
     public void FindBookByTitle_IgnoresOrdinalCase()
     {
+        // Arrange, Act
         var book = _inventory.FindBookByTitle("hArRy PoTtEr");
         var caseBook = _inventory.FindBookByTitle("Harry Potter");
+
+        // Assert
         Assert.AreSame(book, caseBook);
     }
 
     [TestMethod]
     public void RemoveBook_RemovingUnexistingBook()
     {
+        // Arrange, Act, Assert
         Assert.IsFalse(_inventory.RemoveBook("10"));
     }
 
     [TestMethod]
     public void RemoveBook_RemoveExistingBook()
     {
+        // Arrange
         var initialStock = _inventory.CheckStock("1");
+
+        // Assert
         Assert.IsTrue(_inventory.RemoveBook("1"));
 
+        // Act
         var newStock = _inventory.CheckStock("1");
+        // Assert
         Assert.AreEqual(newStock, initialStock -1);
     }
 }
