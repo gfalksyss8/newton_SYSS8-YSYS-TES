@@ -5,7 +5,7 @@ on:
     inputs:
       branch:
         description: "Branch to checkout"
-        required: false
+        required: true
         default: "main"
 
 jobs:
