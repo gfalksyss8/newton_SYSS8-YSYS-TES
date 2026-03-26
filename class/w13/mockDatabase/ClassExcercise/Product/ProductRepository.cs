@@ -8,7 +8,7 @@ using Npgsql;
 
 namespace ProductManager
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly IDbConnection _connection;
 
@@ -48,16 +48,6 @@ namespace ProductManager
 
             return products;
             
-        }
-
-        public void InsertProduct(Product product)
-        {
-            _connection.Open();
-            using var cmd = _connection.CreateCommand();
-            cmd.CommandText = "INSERT INTO products (name, id, category, price) VALUES ('" + product.Name + product.Id + product.Category + product.Price + "')";
-            using var reader = cmd.ExecuteReader();
-
-            _connection.Close();
         }
     }
 }
