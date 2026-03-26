@@ -1,11 +1,11 @@
-name: Run Tests with Coverage
+name: Run Unit Tests for Lab W12
 
 on:
   workflow_dispatch:
     inputs:
       branch:
         description: "Branch to checkout"
-        required: true
+        required: false
         default: "main"
 
 jobs:
@@ -18,8 +18,7 @@ jobs:
 
       - name: Clone target repository
         run: |
-          git clone --branch [YOUR BRANCH] [REPO] repo
-
+          git clone --branch labw12_01 https://github.com/gfalksyss8/newton_SYSS8-YSYS-TES repo
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
